@@ -1,0 +1,199 @@
+.about__viewContainer {
+    background: linear-gradient(0deg, #1F0C00 0%, #3D1700 100%);
+}
+
+.aboutBannerImg{
+    background-image: url(../../assets/bg1.jpg);
+}
+
+.banner_image {
+     width: 470px;
+     height: 330px;
+}
+
+.about__heroSection {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background: url('/path/to/hero-bg.jpg') no-repeat center;
+    background-size: cover;
+}
+
+.subPage__title {
+    font-size: 48px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.about__content {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.6;
+}
+
+
+.about__subTitle {
+    font-size: 36px;
+    color: #FF8735;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+
+.about__card {
+    padding: 20px 24px;
+    transition: transform 0.3s;
+    border-radius: 16px;
+    border: 1px solid #FF6700;
+    
+    background: rgba(0, 0, 0, 0.80);
+    
+    box-shadow: 0px 0px 25px 0px rgba(255, 103, 0, 0.25);
+    backdrop-filter: blur(40px);
+}
+
+.about__card1 {
+    padding: 20px 24px;
+    transition: transform 0.3s;
+    border-radius: 8px;
+    border: 1px solid #FF6700;
+    background: #000;
+    box-shadow: 0px 220px 61px 0px rgba(0, 0, 0, 0.00), 0px 141px 56px 0px rgba(0, 0, 0, 0.01), 0px 79px 47px 0px rgba(0, 0, 0, 0.05), 0px 35px 35px 0px rgba(0, 0, 0, 0.09), 0px 9px 19px 0px rgba(0, 0, 0, 0.10);
+}
+
+.about__card:hover {
+    transform: translateY(-5px);
+}
+
+
+.about__contentTitle {
+    font-size: 20px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+
+.about__contentPara {
+    font-size: 14px;
+    color: #d1d1d1;
+    line-height: 1.5;
+}
+
+
+.about__missionContainer {
+    padding: 40px;
+    border-radius: 12px;
+    border-radius: 16px;
+border: 1px solid #FF6700;
+
+background: rgba(0, 0, 0, 0.80);
+
+box-shadow: 0px 0px 25px 0px rgba(255, 103, 0, 0.25);
+backdrop-filter: blur(40px);
+}
+
+
+
+
+.about__ctaSection {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background: linear-gradient(180deg, #3D1700 0%, #1F0C00 100%);
+    border-radius: 12px;
+    margin-top: 60px;
+}
+
+.about__ctaTitle {
+    font-size: 32px;
+    color: #FF8735;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.about__btn {
+    padding: 12px 24px;
+    background-color: #FF8735;
+    color: #1F0C00;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 20px;
+}
+
+.about__btn:hover {
+    background-color: #FF8735;
+}
+
+.about__whyChoose{
+    padding: 64px 80px;
+}
+
+.about__missionCon{
+    margin: 64px 0px;
+   padding: 0px 160px; 
+}
+
+
+@media (max-width: 1023px) {
+    .subPage__title {
+        font-size: 32px;
+    }
+
+    .about__content {
+        font-size: 16px;
+    }
+
+    .about__subTitle {
+        font-size: 28px;
+    }
+
+    .about__contentTitle {
+        font-size: 18px;
+    }
+
+    .about__contentPara {
+        font-size: 13px;
+    }
+
+    .about__card {
+        padding: 16px 18px;
+    }
+
+    .about__ctaTitle {
+        font-size: 26px;
+    }
+}
+
+
+@media (max-width: 640px) {
+    .about__heroSection {
+        padding: 60px 20px;
+    }
+
+    .about__content {
+        font-size: 14px;
+    }
+
+    .about__subTitle {
+        font-size: 22px;
+    }
+
+    .about__ctaSection {
+        padding: 40px 20px;
+    }
+
+    .about__btn {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .about__missionCon{
+        padding: 0px 20px;
+    }
+}
