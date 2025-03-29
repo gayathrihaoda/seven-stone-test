@@ -21,7 +21,7 @@ jobs:
 
     - name: Authenticate with AWS ECR
       uses: aws-actions/amazon-ecr-login@v1
-      with:
+      env:
         region: ap-south-1  # ✅ Ensure region is specified
 
     - name: Build and Push Image to ECR
