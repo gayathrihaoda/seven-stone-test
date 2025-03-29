@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import "tailwindcss";
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  overflow-x: hidden;
+}
+
+html, body {
+  height: 100dvh;
+  overflow-x: hidden;
+}
+
+.sideBar__subContainer{
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.sideBar__subContainer.open{
+  max-height: 500px;
+}
+

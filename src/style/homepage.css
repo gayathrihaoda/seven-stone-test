@@ -1,0 +1,781 @@
+.banner__section{
+    width: 100%;
+    height: 700px;
+    position: relative;
+}
+
+.banner__section::after{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%);
+}
+
+.banner__content{
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    padding: 0px 40px;
+}
+
+.banner__section video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner__title{
+    color: #FFF;
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: 2.56px;
+    text-transform: uppercase;
+    font-family: "Bebas Neue", sans-serif;
+}
+
+.banner__para{
+    color: #FFF;
+    font-size: 24px;
+    font-weight: 400;
+    font-family: "Montserrat", sans-serif;
+    margin: 30px 0px 60px 0px;
+}
+
+.banner__btn{
+    width: 150px;
+    height: 66px;
+    background-color: rgba(255, 103, 0, 1);
+    filter: drop-shadow(0px 0px 25px #FF6700);    
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)
+}
+
+@media only screen and (max-width: 768px) {
+    .banner__title{
+        font-size: 48px;
+    }
+
+    .banner__para{
+        font-size: 18px;
+    }
+}
+
+.banner__btnName{
+    color: #EEE;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Game list style */
+
+.gameList__container{
+    padding: 100px 0px;
+    background: linear-gradient(0deg, #1F0C00 0%, #3D1700 100%);
+}
+
+.gameList__title{
+    color: #FFF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: 1.92px;
+    text-transform: uppercase;
+}
+
+.gameList__contentList{
+    padding: 0px 20px;
+}
+
+.gameList__para{
+    color: #FFF;
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.96px;
+    margin: 30px 0px;
+}
+
+.gameList__content{
+    background: #FF6700;
+    width: fit-content;
+    color: #FFF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: 1.28px;
+    padding: 10px 60px;
+}
+
+@media only screen and (max-width: 768px) {
+    .gameList__title{
+        font-size: 32px;
+    }
+    .gameList__para{
+        font-size: 18px;
+    }
+
+    .gameList__para{
+        font-size: 20px;
+    }
+    .gameList__content{
+        font-size: 20px;
+        padding: 6px 20px;
+    }
+}
+
+/* Slider style */
+
+.heading {
+    padding: 1rem 0;
+    font-size: 3.5rem;
+    text-align: center;
+}
+
+.tranding-slider{
+    margin-top: 40px;
+}
+
+.swiper_container {
+    height: 530px !important;
+    padding: 2rem 0;
+    position: relative;
+}
+
+.swiper-slide {
+    width: 400px !important;
+    height: 530px !important;
+    position: relative;
+}
+  
+.swiper-slide img {
+  width: 100%;
+  height: 410px;
+  object-fit: cover;
+}
+  
+.slider__imgName{
+    height: 115px;
+    background-color: #000;
+}
+
+.slider__imgTitle{
+    color: #F5FFE6;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.swiper-slide-active{
+    border: 3px solid #FF6700 !important;
+} 
+
+@media (max-width: 500px) {
+    .swiper_container {
+      height: 47rem;
+    }
+    .swiper-slide {
+      width: 300px !important;
+      height: 330px !important;
+    }
+    .swiper-slide img {
+      width: 100% !important;
+      height: 250px !important;
+    }
+    .slider__imgName{
+        height: 72px;
+    }
+    .slider__imgTitle{
+        font-size: 22px;
+    }
+}
+
+
+/* Partner with 7Stone style */
+
+.partner__viewContainer{
+    margin-top: 215px;
+    position: relative;
+    z-index: 2;
+}
+
+.partner__title{
+    color: #FFF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: 1.92px;
+    text-transform: uppercase;
+}
+
+.partner__para{
+    color: #FFF;
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    margin: 30px 0px 40px 0px;
+}
+
+.partner__card{
+    clip-path: polygon(76% 0, 100% 23%, 100% 100%, 0 100%, 0 0);
+    height: 398px;
+    width: 384px;
+    padding: 30px 60px 0px 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.partner__card::after{
+    position: absolute;
+    content: "";
+    transform: scale(1.4);
+    inset: 0;
+    background-color: #000;
+    z-index: -1;
+}
+
+.partner__card::before{
+    position: absolute;
+    content: "";
+    transform: scale(1.7);
+    inset: 0;
+    background-color: red;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+}
+
+.partnerBox__titlef{
+    color: #F00;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 24px 0px;
+}
+
+.partnerteam__titlef{
+    color: #FFF600;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 24px 0px;
+}
+
+.partnerSec__titlef{
+    color: #0FF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 24px 0px;
+}
+
+.partnerBox__para{
+    color: #FFF;
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+}
+
+.partPhnImg{
+    width: 100%;
+    object-fit: cover;
+    margin-top: 12px;
+}
+
+.partner__container{
+    position: relative;
+    z-index: 3;
+    padding: 0px 20px;
+}
+
+.gameImg__foot{
+    position: absolute;
+    left: -10%;
+    z-index: -1;
+    top: -30%;
+}
+
+.gameImg__basket{
+    position: absolute;
+    right: -10%;
+    z-index: -1;
+}
+
+@media only screen and (max-width: 400px) {
+    .partner__card{
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .gameImg__foot{
+        top: -10%;
+    }
+    .gameImg__basket{
+        right: 0%;
+    }
+}
+
+/* Fantacy style */
+
+.fantacy__title{
+    color: #FFF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin-top: 80px;
+}
+
+.fantacy__para{
+    color: #FFF;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 20px;
+}
+
+.sign__up{
+    width: 388px;
+    height: 360px;
+    padding: 0px 37px;
+    background-image: url(../assets/fantasyOImg.jpg);
+    border: 2px solid transparent;
+}
+
+.sign__up:hover{
+    border: 2px solid #FF6700;
+}
+
+.sign__up1{
+    width: 388px;
+    height: 360px;
+    padding: 0px 37px;
+    background-image: url(../assets/fantasySImg.jpg);
+    border: 2px solid transparent;
+}
+
+.sign__up1:hover{
+    border: 2px solid #FF6700;
+}
+
+.sign__up2{
+    width: 388px;
+    height: 360px;
+    padding: 0px 37px;
+    background-image: url(../assets/fantasyTImg.jpg);
+    border: 2px solid transparent;
+}
+
+.sign__up2:hover{
+    border: 2px solid #FF6700;
+}
+
+.sign__up3{
+    width: 388px;
+    height: 360px;
+    padding: 0px 37px;
+    background-image: url(../assets/fantasyFImg.jpg);
+    border: 2px solid transparent;
+}
+
+.sign__up3:hover{
+    border: 2px solid #FF6700;
+}
+
+.sign__up4{
+    width: 388px;
+    height: 360px;
+    padding: 0px 37px;
+    background-image: url(../assets/fantasyFIImg.jpg);
+    border: 2px solid transparent;
+}
+
+.sign__up4:hover{
+    border: 2px solid #FF6700;
+}
+
+.fantasy__container{
+    position: relative;
+}
+
+.fantasy__basket{
+    position: absolute;
+    top: -10%;
+    z-index: -1;
+}
+
+.fantasy__cric{
+    position: absolute;
+    right: 0;
+    top: 55%;
+    z-index: -1;
+}
+
+@media only screen and (max-width: 400px) {
+    .sign__up2, .sign__up, .sign__up1, .sign__up3, .sign__up4{
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .fantasy__cric{
+        z-index: -1;
+    }
+
+    .fantasy__container{
+        padding: 0px 20px;
+    }
+}
+
+/* Why play Style */
+
+.whyPlay__title{
+    color: #000;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.whyPlay__para{
+    color: #000;
+    font-family: "Montserrat", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    margin: 30px 0px 40px;
+}
+
+.whyPlay__card{
+    width: 379px;
+    border-radius: 16px;
+    border: 1px solid #FF6700;
+    background: rgba(0, 0, 0, 0.80);
+    box-shadow: 0px 0px 25px 0px rgba(255, 103, 0, 0.25);
+    backdrop-filter: blur(40px);
+    padding: 20px 30px;
+    margin-top: 20px;
+}
+
+.whyPlay__cardTitle{
+    color: #FFF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 14px 0px 30px 0px;
+}
+
+.whyPlay__cardPara{
+    color: #FFF;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.whyPlay__section{
+    width: 100%;
+    height: 100%;
+    background-image: url(../assets/groundImg.jpg);
+    background-position: center;
+    background-size: 100% 100%;
+    padding: 60px;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.whyPlay__container{
+    position: relative;
+    padding: 0px 20px;
+}
+
+.playImg{
+    position: absolute;
+    bottom: -10%;
+    right: -10%;
+    z-index: 1;
+}
+
+@media only screen and (max-width: 400px) {
+    .whyPlay__card{
+        width: 100%;
+    }
+    .whyPlay__section{
+        padding: 0px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .playImg{
+        right: -36%;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1450px) {
+    .playImg{
+        right: -20%;
+    }
+}
+
+/* FAQ style */
+
+.faq__container{
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, #1F0C00 0%, #3D1700 100%);
+    overflow: hidden;
+}
+
+.faq__title{
+    color: #FFF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 3.96px;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+}
+
+.faq__viewCon{
+    padding: 80px;
+}
+
+.faq__contentTitle{
+    color: #FFF;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.faq__subTitle{
+    color: #FF6700;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 3.96px;
+    text-transform: uppercase;
+}
+
+.faq__viewContainer{
+    border-radius: 8px;
+    border: 2px solid #502000;
+    backdrop-filter: blur(7.5px);
+}
+
+.faq__contentPara{
+    color: #FFF;
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.faq__content{
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0,1,0,1);
+    padding: 0px 40px 0px;
+}
+
+.faq__content.show{
+    height: auto;
+    max-height: 500px;
+    transition: all 0.5s cubic-bezier(1,0,1,0);
+}
+
+.faq__titleContents{
+    height: 80px;
+    padding-left: 40px;
+}
+
+.faq__icons{
+    width: 86px;
+    height: 80px;
+    border-radius: 0px 8px 8px 0px;
+    background: #FF6700;
+    backdrop-filter: blur(7.5px);
+    font-size: 24px;
+    color: #fff;
+    display: grid;
+    place-content: center;
+}
+
+.faqImg{
+    width: 572px;
+    height: 768px;
+    object-fit: cover;
+    position: relative;
+    z-index: -1;
+}
+
+@media only screen and (max-width: 768px) {
+    .faq__contentTitle{
+        font-size: 18px;
+    }
+    .faq__titleContents{
+        height: 80px;
+    }
+    .faq__contentPara{
+        font-size: 14px;
+        padding-bottom: 20px;
+    }
+    .faq__viewCon {
+        padding: 50px 20px;
+    }
+}
+
+@media (min-width: 768px) and  (max-width: 1024px) {
+    .faq__viewCon{
+        padding: 130px 20px 160px 20px;
+    }
+}
+
+/* Connect style */
+
+.connect__container{
+    width: 1240px;
+    border-radius: 8px;
+    border: 1px solid #FF6700;
+    margin-top: -170px;
+    background: #000;
+    padding: 52px 20px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0px 220px 61px 0px rgba(0, 0, 0, 0.00), 0px 141px 56px 0px rgba(0, 0, 0, 0.01), 0px 79px 47px 0px rgba(0, 0, 0, 0.05), 0px 35px 35px 0px rgba(0, 0, 0, 0.09), 0px 9px 19px 0px rgba(0, 0, 0, 0.10);
+}
+
+.connect__title{
+    color: #FFF;
+    text-align: center;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.connect__para{
+    color: #FAFAFA;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.32px;
+    margin: 16px 0px 48px 0px;
+}
+
+.connect__btn{
+    width: 238px;
+    height: 66px;
+    background-color: rgba(255, 103, 0, 1);
+    filter: drop-shadow(0px 0px 25px #FF6700);    
+    clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+    color: #EEE;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+@media only screen and (max-width: 768px) {
+    .connect__title{
+        font-size: 28px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .connect__container{
+        margin-top: 0px;
+    }
+}
+
+@media only screen and (max-width: 1220px) {
+    .connect__container{
+        width: 100%;
+    }
+}
+
+
+/* Footer style */
+
+.footer__section{
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    padding: 0px 20px;
+    padding-top: 90px;
+}
+
+.footer__logo{
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.footer__content{
+    color: #B9B3B3;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.footer__navLink{
+    color: #B9B3B3;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.6s ease-in-out;
+}
+
+.footer__navLink:hover{
+    color: #FF6700;
+    transform: translateX(12px);
+}
+
+.footer__title{
+    color: #FAFAFA;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.36px;
+    margin-bottom: 32px;
+}
+
+.footerView__container{
+    padding: 60px 140px;
+    border-bottom: 1px solid #8A8A8A;
+}
+
+.copy__rights{
+    color: #FAFAFA;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.56px;
+    padding: 40px 0px;
+}
+
+.footer__address{
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 1330px) {
+    .footerView__container{
+        padding: 60px 0px;
+    }
+}
+
+.social__footerContainer{
+    margin-top: 40px;
+}
+
+.footer__socialIcon{
+    color: #B9B3B3;
+    transition: all 0.6s ease-in-out;
+}
+
+.footer__socialIcon:hover{
+    color: #FF6700;
+    transform: translateY(-6px);
+}

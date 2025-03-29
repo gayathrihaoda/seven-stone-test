@@ -1,0 +1,104 @@
+
+.subPage__title{
+    font-size: 48px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.about__content{
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.about__img{
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+}
+
+.content__aboutDetail{
+    padding-right: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.about__subTitle{
+    font-size: 26px;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.about__contentTitle{
+    font-size: 18px;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.about__contentPara{
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.whyChoose__aboutCon{
+    padding-left: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about__viewContent{
+    padding: 160px 0px;
+}
+
+.about__viewContentB{
+    padding-bottom: 220px;
+}
+
+.about__footer{
+    margin-top: 80px;
+}
+
+.about__container{
+    height: 600px;
+}
+
+.section1{
+    width: 100%;
+    height: 100vh;
+    background-color: aliceblue;
+}
+
+.section2{
+    width: 100%;
+    height: 100vh;
+    background-color: antiquewhite;
+}
+
+.section3{
+    width: 100%;
+    height: 100vh;
+    background-color: aqua;
+}
+
+.section4{
+    width: 100%;
+    height: 100vh;
+    background-color: azure;
+}
+
+.section5{
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(0deg, #1F0C00 0%, #3D1700 100%);
+}
+
+.section6{
+    width: 100%;
+    height: 100vh;
+    background-color: blueviolet;
+}
