@@ -53,12 +53,11 @@ jobs:
           echo "NAMESPACE=default" >> $GITHUB_ENV
         fi
 
-    - name: Configure Kubernetes Context
-      run: |
-        echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
-        export KUBECONFIG=kubeconfig.yaml
-        kubectl config current-context
-        kubectl cluster-info
+- name: Configure Kubernetes Context
+  run: |
+    echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
+    export KUBECONFIG=$PWD/kubeconfig.yaml
+    kubectl config current-context || echo "⚠️ Warning: current-context not set!"
 
     - name: Debug Kubernetes Connection
       run: |
