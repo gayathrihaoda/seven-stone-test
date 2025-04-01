@@ -55,10 +55,7 @@ jobs:
       - name: Update Kubernetes Deployment
         run: |
           aws eks --region ap-south-1 update-kubeconfig --name AWS-EKS
-          
-          # Debug Kubernetes Connection
-          echo "Checking Kubernetes API server..."
-          kubectl version --short
+          kubectl version
           kubectl cluster-info
           kubectl get nodes
           kubectl get namespaces
