@@ -1,5 +1,3 @@
-name: Deploy Frontend to Kubernetes
-
 on:
   push:
     branches:
@@ -53,11 +51,11 @@ jobs:
           echo "NAMESPACE=default" >> $GITHUB_ENV
         fi
 
-- name: Configure Kubernetes Context
-  run: |
-    echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
-    export KUBECONFIG=$PWD/kubeconfig.yaml
-    kubectl config current-context || echo "⚠️ Warning: current-context not set!"
+    - name: Configure Kubernetes Context
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
+        export KUBECONFIG=$PWD/kubeconfig.yaml
+        kubectl config current-context || echo "⚠️ Warning: current-context not set!"
 
     - name: Debug Kubernetes Connection
       run: |
@@ -72,4 +70,16 @@ jobs:
       run: |
         kubectl apply -f deployment.yaml -n $NAMESPACE --validate=false
         kubectl rollout status deployment/react-app -n $NAMESPACE
+
+    - name: Check Deployment Status
+      run: |
+        kubectl rollout status deployment/react-app -n $NAMESPACE
+
+    - name: Check Pod Status
+      run: |
+        kubectl get pods -n $NAMESPACE
+
+    - name: Check Services Status
+      run: |
+        kubectl get svc -n $NAMESPACE
 
