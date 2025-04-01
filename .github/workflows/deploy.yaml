@@ -55,5 +55,15 @@ jobs:
       - name: Update Kubernetes Deployment
         run: |
           aws eks --region ap-south-1 update-kubeconfig --name AWS-EKS
+          
+          # Debug Kubernetes Connection
+          echo "Checking Kubernetes API server..."
+          kubectl version --short
+          kubectl cluster-info
+          kubectl get nodes
+          kubectl get namespaces
+          
+          echo "Updating deployment..."
           kubectl set image deployment/seven-stone react-container=401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
-          kubectl rollout status deployment/seven-stone 
+          kubectl rollout status deployment/seven-stone
+
