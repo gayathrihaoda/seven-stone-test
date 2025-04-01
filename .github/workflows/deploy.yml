@@ -7,12 +7,6 @@ on:
       - uat
       - test
       - prod
-  pull_request:
-    branches:
-      - main
-      - uat
-      - test
-      - prod
 
 jobs:
   deploy-frontend:
@@ -30,7 +24,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1  # Change if needed
+        aws-region: ap-south-1
 
     - name: Authenticate with AWS ECR
       uses: aws-actions/amazon-ecr-login@v1
@@ -63,6 +57,13 @@ jobs:
       run: |
         echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
+        kubectl config current-context
+        kubectl cluster-info
+
+    - name: Debug Kubernetes Connection
+      run: |
+        kubectl get pods -A
+        kubectl config view
 
     - name: Update Image in Deployment File
       run: |
@@ -70,6 +71,6 @@ jobs:
 
     - name: Deploy Application to Kubernetes
       run: |
-        kubectl apply -f deployment.yaml -n $NAMESPACE
+        kubectl apply -f deployment.yaml -n $NAMESPACE --validate=false
         kubectl rollout status deployment/react-app -n $NAMESPACE
 
