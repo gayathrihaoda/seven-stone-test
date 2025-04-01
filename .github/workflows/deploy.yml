@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - main
+      - uat
+      - test
+      - prod
   pull_request:
     branches:
       - main
+      - uat
+      - test
+      - prod
 
 jobs:
   deploy-frontend:  # Job Name
@@ -19,10 +25,15 @@ jobs:
     - name: Set up Docker Builder
       uses: docker/setup-buildx-action@v3
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1  # ✅ Change to your AWS region
+
     - name: Authenticate with AWS ECR
       uses: aws-actions/amazon-ecr-login@v1
-      env:
-        region: ap-south-1  # ✅ Ensure region is specified
 
     - name: Build and Push Image to ECR
       env:
@@ -33,7 +44,7 @@ jobs:
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
         docker tag $ECR_REPOSITORY:$IMAGE_TAG 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
         docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV  
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
     - name: Configure Kubernetes Context
       run: |
