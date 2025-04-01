@@ -94,5 +94,6 @@ jobs:
 
       - name: Check Services Status
         run: |
-          kubectl get svc -n $NAMESPACE
+          kubectl get svc -n $NAMESPACE -o wide
+
 
