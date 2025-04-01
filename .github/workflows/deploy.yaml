@@ -53,9 +53,7 @@ jobs:
           docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
 
       - name: Update Kubernetes Deployment
-        if: success()
         run: |
-          aws eks --region ap-south-1 update-kubeconfig --name your-cluster-name
+          aws eks --region ap-south-1 update-kubeconfig --name AWS-EKS
           kubectl set image deployment/seven-stone react-container=401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
-          kubectl rollout status deployment/seven-stone
-
+          kubectl rollout status deployment/seven-stone 
