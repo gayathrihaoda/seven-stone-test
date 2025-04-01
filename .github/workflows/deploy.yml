@@ -36,7 +36,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Set Image Tag
-      run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV  # ✅ Fix applied
+      run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV  
 
     - name: Build and Push Image to ECR
       env:
@@ -47,13 +47,29 @@ jobs:
         docker tag $ECR_REPOSITORY:$IMAGE_TAG 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
         docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
+    - name: Set Namespace Based on Branch
+      run: |
+        if [[ "${{ github.ref }}" == "refs/heads/uat" ]]; then
+          echo "NAMESPACE=uat" >> $GITHUB_ENV
+        elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
+          echo "NAMESPACE=test" >> $GITHUB_ENV
+        elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
+          echo "NAMESPACE=prod" >> $GITHUB_ENV
+        else
+          echo "NAMESPACE=default" >> $GITHUB_ENV
+        fi
+
     - name: Configure Kubernetes Context
       run: |
         echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
 
+    - name: Update Image in Deployment File
+      run: |
+        sed -i "s|image:.*|image: 401544946555.dkr.ecr.ap-south-1.amazonaws.com/react-app:$IMAGE_TAG|g" deployment.yaml
+
     - name: Deploy Application to Kubernetes
       run: |
-        kubectl set image deployment/react-app react-app=401544946555.dkr.ecr.ap-south-1.amazonaws.com/react-app:$IMAGE_TAG -n test
-        kubectl rollout status deployment/react-app -n test
+        kubectl apply -f deployment.yaml -n $NAMESPACE
+        kubectl rollout status deployment/react-app -n $NAMESPACE
 
