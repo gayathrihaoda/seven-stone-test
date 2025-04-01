@@ -1,4 +1,4 @@
-name: Deploy Frontend to Kubernetes  # Workflow Name
+name: Deploy Frontend to Kubernetes
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
       - prod
 
 jobs:
-  deploy-frontend:  # Job Name
+  deploy-frontend:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,21 +30,22 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1  # ✅ Change to your AWS region
+        aws-region: ap-south-1  # Change if needed
 
     - name: Authenticate with AWS ECR
       uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Set Image Tag
+      run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV  # ✅ Fix applied
 
     - name: Build and Push Image to ECR
       env:
         AWS_REGION: ap-south-1
         ECR_REPOSITORY: react-app
       run: |
-        IMAGE_TAG=$(date +%s)
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
         docker tag $ECR_REPOSITORY:$IMAGE_TAG 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
         docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
     - name: Configure Kubernetes Context
       run: |
