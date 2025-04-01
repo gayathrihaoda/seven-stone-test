@@ -62,8 +62,8 @@ jobs:
 
     - name: Debug Kubernetes Connection
       run: |
-        kubectl get pods -A
-        kubectl config view
+        kubectl get pods -A || exit 1
+        kubectl config view || exit 1
 
     - name: Update Image in Deployment File
       run: |
