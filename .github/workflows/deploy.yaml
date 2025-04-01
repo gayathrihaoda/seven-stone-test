@@ -59,7 +59,15 @@ jobs:
           kubectl cluster-info
           kubectl get nodes
           kubectl get namespaces
-          
+
+          # Check if the deployment exists
+          kubectl get deployments seven-stone || echo "Deployment not found, creating..."
+
+          # Create the deployment if it doesn't exist
+          if ! kubectl get deployments seven-stone; then
+            kubectl apply -f deployment.yaml
+          fi
+
           echo "Updating deployment..."
           kubectl set image deployment/seven-stone react-container=401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
           kubectl rollout status deployment/seven-stone
