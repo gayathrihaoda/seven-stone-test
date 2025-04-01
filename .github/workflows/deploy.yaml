@@ -51,6 +51,9 @@ jobs:
       - name: Push Docker Image to ECR
         run: |
           docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
+      - name: verfy AWS authentication
+        run: aws sts get-caller-identity
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
