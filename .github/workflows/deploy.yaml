@@ -1,3 +1,4 @@
+---
 on:
   push:
     branches:
@@ -11,85 +12,87 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Set up Docker Builder
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Builder
+        uses: docker/setup-buildx-action@v3
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
 
-    - name: Authenticate with AWS ECR
-      uses: aws-actions/amazon-ecr-login@v1
+      - name: Authenticate with AWS ECR
+        uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Set Image Tag
-      run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+      - name: Set Image Tag
+        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
 
-    - name: Build and Push Image to ECR
-      env:
-        AWS_REGION: ap-south-1
-        ECR_REPOSITORY: react-app
-      run: |
-        docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-        docker tag $ECR_REPOSITORY:$IMAGE_TAG 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-        docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Build and Push Image to ECR
+        env:
+          AWS_REGION: ap-south-1
+          ECR_REPOSITORY: react-app
+        run: |
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG \
+            401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push \
+            401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
 
-    - name: Set Namespace Based on Branch
-      run: |
-        if [[ "${{ github.ref }}" == "refs/heads/uat" ]]; then
-          echo "NAMESPACE=uat" >> $GITHUB_ENV
-        elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
-          echo "NAMESPACE=test" >> $GITHUB_ENV
-        elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
-          echo "NAMESPACE=prod" >> $GITHUB_ENV
-        else
-          echo "NAMESPACE=default" >> $GITHUB_ENV
-        fi
+      - name: Set Namespace Based on Branch
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/uat" ]]; then
+            echo "NAMESPACE=uat" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
+            echo "NAMESPACE=test" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
+            echo "NAMESPACE=prod" >> $GITHUB_ENV
+          else
+            echo "NAMESPACE=default" >> $GITHUB_ENV
+          fi
 
-    - name: Debug Namespace Setting
-      run: echo "Namespace: $NAMESPACE"
+      - name: Debug Namespace Setting
+        run: echo "Namespace: $NAMESPACE"
 
-    - name: Configure Kubernetes Context
-      run: |
-        echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
-        export KUBECONFIG=$PWD/kubeconfig.yaml
-        kubectl config current-context || echo "⚠️ Warning: current-context not set!"
+      - name: Configure Kubernetes Context
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
+          export KUBECONFIG=$PWD/kubeconfig.yaml
+          kubectl config current-context || echo "⚠️ Warning: current-context not set!"
 
-    - name: Debug Kubernetes Connection
-      run: |
-        kubectl get pods -A
-        kubectl config view
+      - name: Debug Kubernetes Connection
+        run: |
+          kubectl get pods -A
+          kubectl config view
 
-    - name: Update Image in Deployment File
-      run: |
-        sed -i "s|image:.*|image: 401544946555.dkr.ecr.ap-south-1.amazonaws.com/react-app:$IMAGE_TAG|g" deployment.yaml
+      - name: Update Image in Deployment File
+        run: |
+          sed -i "s|image:.*|image: 401544946555.dkr.ecr.ap-south-1.amazonaws.com/react-app:$IMAGE_TAG|g" deployment.yaml
 
-    - name: Debug Deployment File
-      run: cat deployment.yaml
+      - name: Debug Deployment File
+        run: cat deployment.yaml
 
-    - name: Validate Deployment before Applying
-      run: |
-        kubectl apply -f deployment.yaml -n $NAMESPACE --dry-run=client
+      - name: Validate Deployment before Applying
+        run: |
+          kubectl apply -f deployment.yaml -n $NAMESPACE --dry-run=client
 
-    - name: Deploy Application to Kubernetes
-      run: |
-        kubectl apply -f deployment.yaml -n $NAMESPACE --validate=false
-        kubectl rollout status deployment/react-app -n $NAMESPACE
+      - name: Deploy Application to Kubernetes
+        run: |
+          kubectl apply -f deployment.yaml -n $NAMESPACE --validate=false
+          kubectl rollout status deployment/react-app -n $NAMESPACE
 
-    - name: Check Deployment Status
-      run: |
-        kubectl rollout status deployment/react-app -n $NAMESPACE
+      - name: Check Deployment Status
+        run: |
+          kubectl rollout status deployment/react-app -n $NAMESPACE
 
-    - name: Check Pod Status
-      run: |
-        kubectl get pods -n $NAMESPACE
+      - name: Check Pod Status
+        run: |
+          kubectl get pods -n $NAMESPACE
 
-    - name: Check Services Status
-      run: |
-        kubectl get svc -n $NAMESPACE
+      - name: Check Services Status
+        run: |
+          kubectl get svc -n $NAMESPACE
 
