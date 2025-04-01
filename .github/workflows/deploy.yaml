@@ -60,9 +60,17 @@ jobs:
         run: |
           docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
 
-      # Verify AWS Authentication
-      - name: Verify AWS Authentication
-        run: aws sts get-caller-identity
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step to configure AWS credentials for the workflow
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Reference the secret for access key
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Reference the secret for secret access key
+          aws-region: ap-south-1  # Set the AWS region
 
       # Update Kubernetes Configuration (EKS)
       - name: Update Kubernetes Deployment
@@ -71,7 +79,7 @@ jobs:
 
           # Kubernetes actions (check cluster status, nodes, namespaces)
           kubectl version
-          kubectl cluster-info
+          ku:q!bectl cluster-info
           kubectl get nodes
           kubectl get namespaces
 
