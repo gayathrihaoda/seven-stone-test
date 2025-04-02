@@ -21,9 +21,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}  # Use OIDC instead of Access Key
+          role-session-name: GitHubActionsSession
 
       # Check if ECR Repository Exists
       - name: Check if ECR Repository Exists
@@ -34,8 +34,8 @@ jobs:
             echo "ECR_NOT_FOUND=true" >> $GITHUB_ENV
           fi
 
-      # Create ECR Repository if it doesn't exist
-      - name: Create ECR Repository if not exists
+      # Create ECR Repository if not exists
+      - name: Create ECR Repository
         if: env.ECR_NOT_FOUND == 'true'
         run: |
           aws ecr create-repository --repository-name seven-stone --region ap-south-1
@@ -45,50 +45,30 @@ jobs:
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 401544946555.dkr.ecr.ap-south-1.amazonaws.com
 
-      # Build Docker Image
-      - name: Build Docker Image
+      # Build & Push Docker Image
+      - name: Build, Tag & Push Docker Image
         run: |
           docker build -t seven-stone:latest .
-
-      # Tag Docker Image
-      - name: Tag Docker Image
-        run: |
           docker tag seven-stone:latest 401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
-
-      # Push Docker Image to ECR
-      - name: Push Docker Image to ECR
-        run: |
           docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Step to configure AWS credentials for the workflow
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Reference the secret for access key
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Reference the secret for secret access key
-          aws-region: ap-south-1  # Set the AWS region
-
-      # Update Kubernetes Configuration (EKS)
+      # Update Kubernetes Deployment
       - name: Update Kubernetes Deployment
         run: |
           aws eks --region ap-south-1 update-kubeconfig --name AWS-EKS
 
-          # Kubernetes actions (check cluster status, nodes, namespaces)
-          kubectl version
-          ku:q!bectl cluster-info
+          # Check Kubernetes Cluster
+          kubectl cluster-info
           kubectl get nodes
           kubectl get namespaces
 
-          # Check if the deployment exists and create or update it
+          # Deploy or Update React App
           if ! kubectl get deployment seven-stone -n default &>/dev/null; then
             echo "Deployment not found, creating..."
-            kubectl apply -f deployment.yaml
+            kubectl apply -f k8s/deployment.yaml
           else
             echo "Updating deployment..."
             kubectl set image deployment/seven-stone react-container=401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
             kubectl rollout status deployment/seven-stone
           fi
+
