@@ -1,11 +1,11 @@
 # Use Node.js as the build image
-FROM node:18 AS build
+FROM node:20 AS build
 
 # Set working directory
 WORKDIR /app
 
 # Copy package.json and package-lock.json (if available)
-COPY package.json ./
+COPY package.json ./ 
 # Avoid package-lock.json issues by running npm install directly
 
 # Install dependencies
@@ -17,15 +17,15 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Use Nginx for serving the built app
-FROM nginx:alpine
+# Use Apache for serving the built app
+FROM httpd:alpine
 
 # Copy built files from the previous stage
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist/ /usr/local/apache2/htdocs/
 
-# Expose the default Nginx port
+# Expose the default Apache port
 EXPOSE 80
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start Apache
+CMD ["httpd", "-D", "FOREGROUND"]
 
