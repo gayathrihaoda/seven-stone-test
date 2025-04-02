@@ -36,6 +36,9 @@ jobs:
     - name: Set Image Tag
       run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
 
+    - name: Set ECR Repository Name
+      run: echo "ECR_REPOSITORY=react-app" >> $GITHUB_ENV
+
     - name: Print Variables
       run: |
         echo "ECR_REPOSITORY: $ECR_REPOSITORY"
@@ -44,7 +47,7 @@ jobs:
     - name: Build and Push Image to ECR
       env:
         AWS_REGION: ap-south-1
-        ECR_REPOSITORY: react-app
+        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}  # Use the ECR repository secret or the above environment variable
       run: |
         docker build -t $ECR_REPOSITORY:$IMAGE_TAG . || true
         docker images
@@ -70,7 +73,7 @@ jobs:
 
     - name: Update Image in Deployment File
       run: |
-        sed -i "s|image:.*|image: 401544946555.dkr.ecr.ap-south-1.amazonaws.com/react-app:$IMAGE_TAG|g" deployment.yaml
+        sed -i "s|image:.*|image: 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment.yaml
 
     - name: Deploy Application to Kubernetes
       run: |
