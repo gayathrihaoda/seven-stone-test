@@ -1,3 +1,5 @@
+name: Deploy React App to AWS EKS
+
 on:
   push:
     branches:
@@ -5,79 +7,76 @@ on:
       - uat
       - test
       - prod
-  pull_request:
-    branches:
-      - main
-      - uat
-      - test
-      - prod
 
 jobs:
-  deploy-frontend:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Docker Builder
-      uses: docker/setup-buildx-action@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1  # Replace with your region
-
-    - name: Authenticate with AWS ECR
-      uses: aws-actions/amazon-ecr-login@v1
-
-        - name: Set Image Tag
-        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
-
-        - name: Set ECR Repository Name
-        run: echo "ECR_REPOSITORY=react-app" >> $GITHUB_ENV
-
-        - name: Print Variables
+      - name: Check if ECR Repository Exists
+        id: check-ecr
+        continue-on-error: true
         run: |
-            echo "ECR_REPOSITORY: $ECR_REPOSITORY"
-            echo "IMAGE_TAG: $IMAGE_TAG"
+          if ! aws ecr describe-repositories --repository-names seven-stone --region ap-south-1 > /dev/null 2>&1; then
+            echo "ECR_NOT_FOUND=true" >> $GITHUB_ENV
+          fi
 
-        - name: Build and Push Image to ECR
-        env:
-            AWS_REGION: ap-south-1
-            ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}  # Use the ECR repository secret if it's configured
+      - name: Create ECR Repository if not exists
+        if: env.ECR_NOT_FOUND == 'true'
         run: |
-            echo "Building Docker image with tag $IMAGE_TAG for repository $ECR_REPOSITORY"
-            docker build -t $ECR_REPOSITORY:$IMAGE_TAG . || true
-            docker images
-            docker tag $ECR_REPOSITORY:$IMAGE_TAG 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-            docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          aws ecr create-repository --repository-name seven-stone --region ap-south-1
 
-    - name: Set Namespace Based on Branch
-      run: |
-        if [[ "${{ github.ref }}" == "refs/heads/uat" ]]; then
-          echo "NAMESPACE=uat" >> $GITHUB_ENV
-        elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
-          echo "NAMESPACE=test" >> $GITHUB_ENV
-        elif [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
-          echo "NAMESPACE=prod" >> $GITHUB_ENV
-        else
-          echo "NAMESPACE=default" >> $GITHUB_ENV
-        fi
+      - name: Login to AWS ECR
+        run: |
+          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 401544946555.dkr.ecr.ap-south-1.amazonaws.com
 
-    - name: Configure Kubernetes Context
-      run: |
-        echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig.yaml
-        export KUBECONFIG=kubeconfig.yaml
+      - name: Build Docker Image
+        run: |
+          docker build -t seven-stone:latest .
 
-    - name: Update Image in Deployment File
-      run: |
-        sed -i "s|image:.*|image: 401544946555.dkr.ecr.ap-south-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment.yaml
+      - name: Tag Docker Image
+        run: |
+          docker tag seven-stone:latest 401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
 
-    - name: Deploy Application to Kubernetes
-      run: |
-        kubectl apply -f deployment.yaml -n $NAMESPACE
-        kubectl rollout status deployment/react-app -n $NAMESPACE
+      - name: Push Docker Image to ECR
+        run: |
+          docker push 401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
+      - name: verfy AWS authentication
+        run: aws sts get-caller-identity
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Update Kubernetes Deployment
+        run: |
+          aws eks --region ap-south-1 update-kubeconfig --name AWS-EKS
+          kubectl version
+          kubectl cluster-info
+          kubectl get nodes
+          kubectl get namespaces
+
+          # Check if the deployment exists correctly
+          if ! kubectl get deployment seven-stone -n default &>/dev/null; then
+            echo "Deployment not found, creating..."
+            kubectl apply -f deployment.yaml
+          else
+            echo "Updating deployment..."
+            kubectl set image deployment/seven-stone react-container=401544946555.dkr.ecr.ap-south-1.amazonaws.com/seven-stone:latest
+            kubectl rollout status deployment/seven-stone
+          fi
+
 
